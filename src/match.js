@@ -4,7 +4,7 @@ class Match {
   constructor(name1, name2) {
     this.name1 = name1;
     this.name2 = name2;
-    this.points = [];
+    this.pointsWonBy = [];
   }
 
   pointWonBy(playerName) {
@@ -13,15 +13,15 @@ class Match {
       playerNumber = 2;
     }
 
-    this.points.push(playerNumber);
+    this.pointsWonBy.push(playerNumber);
   }
 
   score() {
     const player1 = new Player(this.name1);
     const player2 = new Player(this.name2);
 
-    this.points.forEach((nextPoint) => {
-      if (nextPoint == 1) {
+    this.pointsWonBy.forEach((nextPointWonBy) => {
+      if (nextPointWonBy == 1) {
         player1.awardPoint();
         if (this.hasPlayerWonGame(player1, player2)) {
           player1.awardGame();
@@ -30,7 +30,7 @@ class Match {
         }
       }
 
-      if (nextPoint == 2) {
+      if (nextPointWonBy == 2) {
         player2.awardPoint();
         if (this.hasPlayerWonGame(player2, player1)) {
           player2.awardGame();

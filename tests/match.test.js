@@ -15,7 +15,7 @@ test("should record list of points of each player when two points each", () => {
   match.pointWonBy(namePlayer1);
   match.pointWonBy(namePlayer2);
 
-  const got = match.points;
+  const got = match.pointsWonBy;
   expect(got).toStrictEqual([1, 2]);
 });
 
@@ -27,7 +27,7 @@ test("should record list of points of each player when many points each", () => 
   match.pointWonBy(namePlayer2);
   match.pointWonBy(namePlayer2);
 
-  const got = match.points;
+  const got = match.pointsWonBy;
   expect(got).toStrictEqual([1, 2, 1, 2, 2]);
 });
 
