@@ -245,3 +245,24 @@ test("should display scores when set won by player 1", () => {
   const got = match.score();
   expect(got).toBe("Set won by player 1");
 });
+
+test("should display scores when set won by player 2", () => {
+  // given
+  const match = new Match(namePlayer1, namePlayer2);
+  awardGameToPlayer(match, namePlayer1); // 1-0
+  awardGameToPlayer(match, namePlayer2); // 1-1
+  awardGameToPlayer(match, namePlayer1); // 2-1
+  awardGameToPlayer(match, namePlayer2); // 2-2
+  awardGameToPlayer(match, namePlayer1); // 3-2
+  awardGameToPlayer(match, namePlayer2); // 3-3
+  awardGameToPlayer(match, namePlayer1); // 4-3
+  awardGameToPlayer(match, namePlayer2); // 4-4
+  awardGameToPlayer(match, namePlayer2); // 4-5
+
+  // when
+  awardGameToPlayer(match, namePlayer2); // 4-6
+
+  // then
+  const got = match.score();
+  expect(got).toBe("Set won by player 2");
+});
