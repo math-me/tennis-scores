@@ -59,7 +59,11 @@ class Match {
   }
 
   hasPlayerWonSet(player, opponent) {
-    return player.gamesWon >= 6 && player.gamesWon - opponent.gamesWon >= 2;
+    const playerWonWithoutTieBreak =
+      player.gamesWon >= 6 && player.gamesWon - opponent.gamesWon >= 2;
+    const playerWonWithTieBreak =
+      player.gamesWon >= 7 && player.gamesWon - opponent.gamesWon >= 1;
+    return playerWonWithoutTieBreak || playerWonWithTieBreak;
   }
 
   formatGameScore(player1, player2) {

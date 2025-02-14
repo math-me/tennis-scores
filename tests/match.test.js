@@ -266,3 +266,61 @@ test("should display scores when set won by player 2", () => {
   const got = match.score();
   expect(got).toBe("Set won by player 2");
 });
+
+test("should display scores when set won by player 1 with 7-5", () => {
+  // given
+  const match = new Match(namePlayer1, namePlayer2);
+  awardGameToPlayer(match, namePlayer1); // 1-0
+  awardGameToPlayer(match, namePlayer2); // 1-1
+  awardGameToPlayer(match, namePlayer1); // 2-1
+  awardGameToPlayer(match, namePlayer2); // 2-2
+  awardGameToPlayer(match, namePlayer1); // 3-2
+  awardGameToPlayer(match, namePlayer2); // 3-3
+  awardGameToPlayer(match, namePlayer1); // 4-3
+  awardGameToPlayer(match, namePlayer2); // 4-4
+  awardGameToPlayer(match, namePlayer2); // 4-5
+  awardGameToPlayer(match, namePlayer1); // 5-5
+  awardGameToPlayer(match, namePlayer1); // 6-5
+
+  // when
+  awardGameToPlayer(match, namePlayer1); // 7-5
+
+  // then
+  const got = match.score();
+  expect(got).toBe("Set won by player 1");
+});
+
+test("should display scores when set won by player 1 with tie break 7-6", () => {
+  // given
+  const match = new Match(namePlayer1, namePlayer2);
+  awardGameToPlayer(match, namePlayer1); // 1-0
+  awardGameToPlayer(match, namePlayer2); // 1-1
+  awardGameToPlayer(match, namePlayer1); // 2-1
+  awardGameToPlayer(match, namePlayer2); // 2-2
+  awardGameToPlayer(match, namePlayer1); // 3-2
+  awardGameToPlayer(match, namePlayer2); // 3-3
+  awardGameToPlayer(match, namePlayer1); // 4-3
+  awardGameToPlayer(match, namePlayer2); // 4-4
+  awardGameToPlayer(match, namePlayer2); // 4-5
+  awardGameToPlayer(match, namePlayer1); // 5-5
+  awardGameToPlayer(match, namePlayer1); // 6-5
+  awardGameToPlayer(match, namePlayer2); // 6-6
+
+  // when
+  match.pointWonBy(namePlayer1); // 1-0
+  match.pointWonBy(namePlayer2); // 1-1
+  match.pointWonBy(namePlayer1); // 2-1
+  match.pointWonBy(namePlayer2); // 2-2
+  match.pointWonBy(namePlayer1); // 3-2
+  match.pointWonBy(namePlayer2); // 3-3
+  match.pointWonBy(namePlayer1); // 4-3
+  match.pointWonBy(namePlayer2); // 4-4
+  match.pointWonBy(namePlayer1); // 5-4
+  match.pointWonBy(namePlayer2); // 5-5
+  match.pointWonBy(namePlayer1); // 6-5
+  match.pointWonBy(namePlayer1); // 7-5 game and set
+
+  // then
+  const got = match.score();
+  expect(got).toBe("Set won by player 1");
+});
