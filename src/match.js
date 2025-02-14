@@ -1,3 +1,5 @@
+const Player = require("./player.js");
+
 class Match {
   constructor(name1, name2) {
     this.name1 = name1;
@@ -15,81 +17,81 @@ class Match {
   }
 
   score() {
-    let gamesPlayer1 = 0;
-    let gamesPlayer2 = 0;
-
-    let pointsPlayer1 = 0;
-    let pointsPlayer2 = 0;
+    const player1 = new Player(this.name1);
+    const player2 = new Player(this.name2);
 
     this.points.forEach((nextPoint) => {
       if (nextPoint == 1) {
-        pointsPlayer1++;
-        if (this.hasPlayerWonGame(pointsPlayer1, pointsPlayer2)) {
-          gamesPlayer1++;
-          pointsPlayer1 = 0;
-          pointsPlayer2 = 0;
+        player1.awardPoint();
+        if (this.hasPlayerWonGame(player1, player2)) {
+          player1.awardGame();
+          player1.resetForNextGame();
+          player2.resetForNextGame();
         }
       }
 
       if (nextPoint == 2) {
-        pointsPlayer2++;
-        if (this.hasPlayerWonGame(pointsPlayer2, pointsPlayer1)) {
-          gamesPlayer2++;
-          pointsPlayer1 = 0;
-          pointsPlayer2 = 0;
+        player2.awardPoint();
+        if (this.hasPlayerWonGame(player2, player1)) {
+          player2.awardGame();
+          player1.resetForNextGame();
+          player2.resetForNextGame();
         }
       }
     });
 
-    if (this.hasPlayerWonSet(gamesPlayer1, gamesPlayer2)) {
-      return `Set won by ${this.name1}`;
+    if (this.hasPlayerWonSet(player1, player2)) {
+      return `Set won by ${player1.name}`;
     }
 
-    if (this.hasPlayerWonSet(gamesPlayer2, gamesPlayer1)) {
-      return `Set won by ${this.name2}`;
+    if (this.hasPlayerWonSet(player2, player1)) {
+      return `Set won by ${player2.name}`;
     }
 
-    return `${gamesPlayer1}-${gamesPlayer2}${this.formatGameScore(pointsPlayer1, pointsPlayer2)}`;
+    return `${player1.gamesWon}-${player2.gamesWon}${this.formatGameScore(player1, player2)}`;
   }
 
-  hasPlayerWonGame(playerPoints, opponentPoints) {
-    return playerPoints >= 4 && playerPoints - opponentPoints >= 2;
+  hasPlayerWonGame(player, opponent) {
+    return (
+      player.currentGamePoints >= 4 &&
+      player.currentGamePoints - opponent.currentGamePoints >= 2
+    );
   }
 
-  hasPlayerWonSet(gamesPlayer, gamesOpponent) {
-    return gamesPlayer >= 6 && gamesPlayer - gamesOpponent >= 2;
+  hasPlayerWonSet(player, opponent) {
+    return player.gamesWon >= 6 && player.gamesWon - opponent.gamesWon >= 2;
   }
 
-  formatGameScore(pointsPlayer1, pointsPlayer2) {
-    if (pointsPlayer1 == 0 && pointsPlayer2 == 0) {
+  formatGameScore(player1, player2) {
+    if (player1.currentGamePoints == 0 && player2.currentGamePoints == 0) {
       return ""; // game just started, no points, blank score
     }
 
-    if (pointsPlayer1 == 3 && pointsPlayer2 == 3) {
+    if (player1.currentGamePoints == 3 && player2.currentGamePoints == 3) {
       return ", Deuce";
     }
 
-    if (pointsPlayer1 <= 3 && pointsPlayer2 <= 3) {
+    if (player1.currentGamePoints <= 3 && player2.currentGamePoints <= 3) {
       // both players yet to reach 3 points so just add up the points
       const toScore = (points) => Math.min(points * 15, 40);
-      return `, ${toScore(pointsPlayer1)}-${toScore(pointsPlayer2)}`;
+      return `, ${toScore(player1.currentGamePoints)}-${toScore(player2.currentGamePoints)}`;
     }
 
-    if (pointsPlayer1 - pointsPlayer2 > 0) {
-      return `, Advantage ${this.name1}`;
+    if (player1.currentGamePoints - player2.currentGamePoints > 0) {
+      return `, Advantage ${player1.name}`;
     }
 
-    if (pointsPlayer2 - pointsPlayer1 > 0) {
-      return `, Advantage ${this.name2}`;
+    if (player2.currentGamePoints - player1.currentGamePoints > 0) {
+      return `, Advantage ${player2.name}`;
     }
 
-    if (pointsPlayer1 > 3 && pointsPlayer2 > 3) {
+    if (player1.currentGamePoints > 3 && player2.currentGamePoints > 3) {
       return ", Deuce";
     }
 
     // should never get here, throw clear error just in case
     throw Error(
-      `unexpected game score [pointsPlayer1=${pointsPlayer1}] [pointsPlayer2=${pointsPlayer2}]`,
+      `unexpected game score [pointsPlayer1=${player1.currentGamePoints}] [pointsPlayer2=${player2.currentGamePoints}]`,
     );
   }
 }
