@@ -71,6 +71,11 @@ class Match {
       return ""; // game just started, no points, blank score
     }
 
+    if (player1.gamesWon == 6 && player2.gamesWon == 6) {
+      // tie break game, simply return points accumulated...
+      return `, ${player1.currentGamePoints}-${player2.currentGamePoints}`;
+    }
+
     if (player1.currentGamePoints == 3 && player2.currentGamePoints == 3) {
       return ", Deuce";
     }
