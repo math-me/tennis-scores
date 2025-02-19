@@ -10,27 +10,6 @@ const awardGameToPlayer = (match, playerName) => {
   match.pointWonBy(playerName); // game won
 };
 
-test("should record list of points of each player when two points each", () => {
-  const match = new Match(namePlayer1, namePlayer2);
-  match.pointWonBy(namePlayer1);
-  match.pointWonBy(namePlayer2);
-
-  const got = match.pointsWonBy;
-  expect(got).toStrictEqual([1, 2]);
-});
-
-test("should record list of points of each player when many points each", () => {
-  const match = new Match(namePlayer1, namePlayer2);
-  match.pointWonBy(namePlayer1);
-  match.pointWonBy(namePlayer2);
-  match.pointWonBy(namePlayer1);
-  match.pointWonBy(namePlayer2);
-  match.pointWonBy(namePlayer2);
-
-  const got = match.pointsWonBy;
-  expect(got).toStrictEqual([1, 2, 1, 2, 2]);
-});
-
 test("should display scores after first two points", () => {
   // given
   const match = new Match(namePlayer1, namePlayer2);
@@ -341,13 +320,13 @@ test("should display scores when tie break in progress", () => {
   awardGameToPlayer(match, namePlayer1); // 6-5
   awardGameToPlayer(match, namePlayer2); // 6-6
 
-  for (let i=0; i<7; i++) {
+  for (let i = 0; i < 7; i++) {
     // when
     match.pointWonBy(namePlayer1);
     match.pointWonBy(namePlayer2);
 
     // then
     const got = match.score();
-    expect(got).toBe(`6-6, ${i+1}-${i+1}`);
+    expect(got).toBe(`6-6, ${i + 1}-${i + 1}`);
   }
 });

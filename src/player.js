@@ -1,20 +1,36 @@
 class Player {
+  #name;
+  #currentGamePoints;
+  #gamesWon;
+
   constructor(name) {
-    this.name = name;
-    this.currentGamePoints = 0;
-    this.gamesWon = 0;
+    this.#name = name;
+    this.#currentGamePoints = 0;
+    this.#gamesWon = 0;
   }
 
   awardPoint() {
-    this.currentGamePoints++;
+    this.#currentGamePoints++;
   }
 
   awardGame() {
-    this.gamesWon++;
+    this.#gamesWon++;
   }
 
   resetForNextGame() {
-    this.currentGamePoints = 0;
+    this.#currentGamePoints = 0;
+  }
+
+  getName() {
+    return this.#name;
+  }
+
+  getCurrentGamePoints() {
+    return this.#currentGamePoints;
+  }
+
+  getGamesWon() {
+    return this.#gamesWon;
   }
 }
 
